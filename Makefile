@@ -2,6 +2,6 @@ api:
 	bash gen_api.sh
 
 all:
-	pnpm build
+	yarn build
 
 .PHONY: api
