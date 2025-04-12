@@ -2,7 +2,7 @@ import useSWR from "swr"
 import { api } from "../shared"
 import { VMListProvider, VMListItem } from "../api/models"
 import { Card, Typography, Space, Row, Col, Spin, Alert, Tag, Button, Popconfirm, Popover } from 'antd'
-import { CloseOutlined, ContainerOutlined, KeyOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons'
+import { CloseOutlined, ContainerOutlined, KeyOutlined, PlusOutlined, ReloadOutlined, SettingOutlined } from '@ant-design/icons'
 import { useNavigate } from "react-router-dom"
 import { useState } from "react" 
 const { Title } = Typography
@@ -19,6 +19,7 @@ const CreateVMBar = ({ children } : CreateVMBarProps) => {
             <Button icon={<ReloadOutlined />} onClick={() => {
                 window.location.reload()
             }}></Button>
+            <Button icon={<SettingOutlined />} onClick={() => navigate('/settings')}></Button>
         </Space>
             {children}
         </div>

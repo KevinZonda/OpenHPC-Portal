@@ -3,6 +3,7 @@ import { App } from "./App";
 import { ListPage } from "./pages/list";
 import { CreatePage } from "./pages/create";
 import { CreatedPage } from "./pages/created";
+import { SettingsPage } from "./pages/sattings";
 export const Router = createBrowserRouter([
     {
         path: "/",
@@ -19,6 +20,10 @@ export const Router = createBrowserRouter([
             {
                 path: "/created",
                 element: <CreatedPage />,
+            },
+            {
+                path: "/settings",
+                element: <SettingsPage />,
             },
         ],  
     },
