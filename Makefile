@@ -1,8 +1,8 @@
-api:
-	bash gen_api.sh
-
 all:
 	yarn build
+
+api:
+	bash gen_api.sh
 
 install:
 	yarn install

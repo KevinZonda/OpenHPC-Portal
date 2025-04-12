@@ -7,8 +7,8 @@ export const App = () => {
   const navigate = useNavigate()
 
   return (
-    <div style={{ padding: '24px' }}>
-      <Title onClick={() => navigate('/')} level={1} style={{ marginTop: 0,  cursor: 'pointer' }}>OpenHPC Portal</Title>
+    <div style={{ padding: '32px' }}>
+      <Title onClick={() => navigate('/')} level={1} style={{ marginTop: '-6px',  cursor: 'pointer' }}>OpenHPC</Title>
       <Outlet />
     </div>
   )
