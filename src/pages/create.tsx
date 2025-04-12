@@ -1,4 +1,4 @@
-import { Typography, Form, Select, Input, Button, Switch, Card, Space, Spin, message } from "antd"
+import { Typography, Form, Select, Input, Button, Switch, Card, Space, Spin, message, Slider } from "antd"
 import { useState } from "react"
 import { api } from "../shared"
 import { useNavigate } from "react-router-dom"
@@ -66,11 +66,45 @@ export const CreatePage = () => {
                             <Input />
                         </Form.Item>
                         <Form.Item 
+                            label="Shared Memory (shm)" 
+                            name="shm"
+                            tooltip="Shared memory for your VM. Usually 8GB is enough for middle size projects. If you work with videos or large models, you can increase it up to 64GB."
+                            initialValue={8192}
+                        >
+                            <Slider
+                                min={64}
+                                max={65536}
+                                step={null}
+                                marks={{
+                                    64: '64MB',
+                                    128: '128MB',
+                                    256: '256MB',
+                                    512: '512MB',
+                                    1024: '1GB',
+                                    2048: '2GB',
+                                    4096: '4GB',
+                                    8192: '8GB',
+                                    12288: '12GB',
+                                    16384: '16GB',
+                                    24576: '24GB',
+                                    32768: '32GB',
+                                    49152: '48GB',
+                                    65536: '64GB'
+                                }}
+                                tooltip={{
+                                    formatter: (value) => {
+                                        if (!value) return '0MB'
+                                        return value >= 1024 ? `${value / 1024}GB` : `${value}MB`
+                                    }
+                                }}
+                            />
+                        </Form.Item>
+                        <Form.Item 
                             label="Enable RDS" 
                             name="enableRds"
                             tooltip="RDS is persistent storage for your VM"
                         >
-                            <Switch defaultChecked={true} onChange={(checked) => setEnableRds(checked)} />
+                            <Switch defaultChecked={enableRds} onChange={(checked) => setEnableRds(checked)} />
                         </Form.Item>
                         {enableRds && (
                             <Form.Item 
@@ -95,7 +129,8 @@ export const CreatePage = () => {
                                             owner: values.owner,
                                             project: values.project,
                                             enableRds: enableRds,
-                                            rdsFolder: enableRds ? values.rdsFolder : undefined
+                                            rdsFolder: enableRds ? values.rdsFolder : undefined,
+                                            shm: values.shm
                                         }
                                         api.vmRequestPost({
                                             vMReq: request

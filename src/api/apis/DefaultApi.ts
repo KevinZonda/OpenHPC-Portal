@@ -23,6 +23,7 @@ import type {
   VMReq,
   VMTokenReq,
   VMTokenResp,
+  VMUpgradeReq,
 } from '../models/index';
 import {
     LoginReqFromJSON,
@@ -41,6 +42,8 @@ import {
     VMTokenReqToJSON,
     VMTokenRespFromJSON,
     VMTokenRespToJSON,
+    VMUpgradeReqFromJSON,
+    VMUpgradeReqToJSON,
 } from '../models/index';
 
 export interface StatContainerGetRequest {
@@ -65,6 +68,10 @@ export interface VmRequestPostRequest {
 
 export interface VmTokenPostRequest {
     vMTokenReq?: VMTokenReq;
+}
+
+export interface VmUpgradePostRequest {
+    vMUpgradeReq?: VMUpgradeReq;
 }
 
 /**
@@ -412,6 +419,41 @@ export class DefaultApi extends runtime.BaseAPI {
      */
     async vmTokenPost(requestParameters: VmTokenPostRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<VMTokenResp> {
         const response = await this.vmTokenPostRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * 
+     * VM upgrade
+     */
+    async vmUpgradePostRaw(requestParameters: VmUpgradePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // apikey-header-Authorization authentication
+        }
+
+        const response = await this.request({
+            path: `/vm/upgrade`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: VMUpgradeReqToJSON(requestParameters['vMUpgradeReq']),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse<any>(response);
+    }
+
+    /**
+     * 
+     * VM upgrade
+     */
+    async vmUpgradePost(requestParameters: VmUpgradePostRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object> {
+        const response = await this.vmUpgradePostRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

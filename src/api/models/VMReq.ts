@@ -49,6 +49,12 @@ export interface VMReq {
      * @memberof VMReq
      */
     rdsFolder: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof VMReq
+     */
+    shm: number;
 }
 
 /**
@@ -60,6 +66,7 @@ export function instanceOfVMReq(value: object): value is VMReq {
     if (!('project' in value) || value['project'] === undefined) return false;
     if (!('enableRds' in value) || value['enableRds'] === undefined) return false;
     if (!('rdsFolder' in value) || value['rdsFolder'] === undefined) return false;
+    if (!('shm' in value) || value['shm'] === undefined) return false;
     return true;
 }
 
@@ -78,6 +85,7 @@ export function VMReqFromJSONTyped(json: any, ignoreDiscriminator: boolean): VMR
         'project': json['project'],
         'enableRds': json['enable_rds'],
         'rdsFolder': json['rds_folder'],
+        'shm': json['shm'],
     };
 }
 
@@ -97,6 +105,7 @@ export function VMReqToJSONTyped(value?: VMReq | null, ignoreDiscriminator: bool
         'project': value['project'],
         'enable_rds': value['enableRds'],
         'rds_folder': value['rdsFolder'],
+        'shm': value['shm'],
     };
 }
 

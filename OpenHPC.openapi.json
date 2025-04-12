@@ -237,6 +237,44 @@
         ]
       }
     },
+    "/vm/upgrade": {
+      "post": {
+        "summary": "VM upgrade",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VMUpgradeReq"
+              },
+              "examples": {}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "apikey-header-Authorization": []
+          }
+        ]
+      }
+    },
     "/stat/nvidia-smi": {
       "get": {
         "summary": "Nvidia-SMI",
@@ -390,6 +428,9 @@
           },
           "rds_folder": {
             "type": "string"
+          },
+          "shm": {
+            "type": "integer"
           }
         },
         "required": [
@@ -397,7 +438,8 @@
           "owner",
           "project",
           "enable_rds",
-          "rds_folder"
+          "rds_folder",
+          "shm"
         ]
       },
       "VMCreatedInfo": {
@@ -565,6 +607,25 @@
         "required": [
           "provider",
           "id"
+        ]
+      },
+      "VMUpgradeReq": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "shm": {
+            "type": "integer"
+          },
+          "provider": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "shm",
+          "id",
+          "provider"
         ]
       }
     },

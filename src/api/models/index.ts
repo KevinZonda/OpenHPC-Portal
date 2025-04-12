@@ -10,3 +10,4 @@ export * from './VMListProvider';
 export * from './VMReq';
 export * from './VMTokenReq';
 export * from './VMTokenResp';
+export * from './VMUpgradeReq';
