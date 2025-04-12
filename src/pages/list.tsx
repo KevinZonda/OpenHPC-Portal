@@ -1,12 +1,14 @@
 import useSWR from "swr"
 import { api } from "../shared"
 import { VMListProvider, VMListItem } from "../api/models"
-import { Card, Typography, Space, Row, Col, Spin, Alert, Tag } from 'antd'
+import { Card, Typography, Space, Row, Col, Spin, Alert, Tag, Button } from 'antd'
 import { ContainerOutlined } from '@ant-design/icons'
+import { useNavigate } from "react-router-dom"
 
 const { Title } = Typography
 
 export const ListPage = () => {
+    const navigate = useNavigate()
     const {data, error, isLoading} = useSWR('/list', async () => {
         return await api.vmListGet()
     })
@@ -27,6 +29,7 @@ export const ListPage = () => {
     }
 
     return <div>
+        <Button onClick={() => navigate('/create')}>Create VM</Button>
         {data?.sort((a, b) => a.provider.localeCompare(b.provider)).map((provider) => {
             return listPerProvider(provider)
         })}

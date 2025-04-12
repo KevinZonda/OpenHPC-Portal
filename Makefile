@@ -4,4 +4,12 @@ api:
 all:
 	yarn build
 
+install:
+	yarn install
+
+i: install
+
+dev:
+	yarn dev
+
 .PHONY: api
