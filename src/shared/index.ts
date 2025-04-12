@@ -22,3 +22,13 @@ export let api = initApiConfig(getApiUrl(), getApiKey())
 export const initApi = (baseUrl : string, apiKey : string) => {
     api = initApiConfig(baseUrl, apiKey)
 }
+
+export const getMetricsFreshTime = () => {
+    const local = localStorage.getItem('metricsFreshTime')
+    if (local) {
+        const parsed = parseInt(local)
+        return isNaN(parsed) || parsed < 500 ? 1000 : parsed
+    }
+    return 1000
+}
+

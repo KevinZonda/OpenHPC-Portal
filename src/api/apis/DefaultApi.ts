@@ -43,6 +43,10 @@ import {
     VMTokenRespToJSON,
 } from '../models/index';
 
+export interface StatContainerGetRequest {
+    provider?: string;
+}
+
 export interface UserLoginPostRequest {
     loginReq?: LoginReq;
 }
@@ -67,6 +71,122 @@ export interface VmTokenPostRequest {
  * 
  */
 export class DefaultApi extends runtime.BaseAPI {
+
+    /**
+     * 
+     * 容器统计
+     */
+    async statContainerGetRaw(requestParameters: StatContainerGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>> {
+        const queryParameters: any = {};
+
+        if (requestParameters['provider'] != null) {
+            queryParameters['provider'] = requestParameters['provider'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/stat/container`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse<any>(response);
+    }
+
+    /**
+     * 
+     * 容器统计
+     */
+    async statContainerGet(requestParameters: StatContainerGetRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object> {
+        const response = await this.statContainerGetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * 
+     * cpu状态
+     */
+    async statCpuGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/stat/cpu`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse<any>(response);
+    }
+
+    /**
+     * 
+     * cpu状态
+     */
+    async statCpuGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object> {
+        const response = await this.statCpuGetRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * 
+     * 内存状态
+     */
+    async statMemGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/stat/mem`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse<any>(response);
+    }
+
+    /**
+     * 
+     * 内存状态
+     */
+    async statMemGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object> {
+        const response = await this.statMemGetRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * 
+     * Nvidia-SMI
+     */
+    async statNvidiaSmiGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/stat/nvidia-smi`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse<any>(response);
+    }
+
+    /**
+     * 
+     * Nvidia-SMI
+     */
+    async statNvidiaSmiGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object> {
+        const response = await this.statNvidiaSmiGetRaw(initOverrides);
+        return await response.value();
+    }
 
     /**
      * 

@@ -2,9 +2,10 @@ import useSWR from "swr"
 import { api } from "../shared"
 import { VMListProvider, VMListItem } from "../api/models"
 import { Card, Typography, Space, Row, Col, Spin, Alert, Tag, Button, Popconfirm, Popover } from 'antd'
-import { CloseOutlined, ContainerOutlined, KeyOutlined, PlusOutlined, ReloadOutlined, SettingOutlined } from '@ant-design/icons'
+import { CloseOutlined, ContainerOutlined, KeyOutlined, PlusOutlined, ReloadOutlined, SettingOutlined, BarChartOutlined } from '@ant-design/icons'
 import { useNavigate } from "react-router-dom"
 import { useState } from "react" 
+import { PerformanceMetrics } from "../components/AutoRefresh"
 const { Title } = Typography
 
 interface CreateVMBarProps {
@@ -13,6 +14,7 @@ interface CreateVMBarProps {
 
 const CreateVMBar = ({ children } : CreateVMBarProps) => {
     const navigate = useNavigate()
+    const [showMetrics, setShowMetrics] = useState(false)
     return <div>
         <Space>
             <Button icon={<PlusOutlined />} type="primary" onClick={() => navigate('/create')}></Button>
@@ -20,8 +22,10 @@ const CreateVMBar = ({ children } : CreateVMBarProps) => {
                 window.location.reload()
             }}></Button>
             <Button icon={<SettingOutlined />} onClick={() => navigate('/settings')}></Button>
+            <Button icon={<BarChartOutlined />} onClick={() => setShowMetrics(!showMetrics)}></Button>
         </Space>
-            {children}
+        {showMetrics && <PerformanceMetrics />}
+        {children}
         </div>
 }
 export const ListPage = () => {
