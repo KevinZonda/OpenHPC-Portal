@@ -1,7 +1,7 @@
 import useSWR from "swr"
 import { api } from "../shared"
 import { VMListProvider, VMListItem } from "../api/models"
-import { Card, Typography, Space, Row, Col, Spin, Alert, Tag, Button, message, Popconfirm, Popover } from 'antd'
+import { Card, Typography, Space, Row, Col, Spin, Alert, Tag, Button, Popconfirm, Popover } from 'antd'
 import { CloseOutlined, ContainerOutlined, KeyOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons'
 import { useNavigate } from "react-router-dom"
 import { useState } from "react" 
@@ -79,11 +79,7 @@ const ItemPerProvider = ({provId, item} : ItemPerProviderProps) => {
     const [openToken, setOpenToken] = useState(false);
     const [token, setToken] = useState<string[]>([])
 
-    if (isDeleted) {
-        return <>Deleted</>
-    }
-
-    return <Col xs={24} sm={12} md={8} lg={6} key={item.cid}>
+    return isDeleted ? <>Deleted</> : <Col xs={24} sm={12} md={8} lg={6} key={item.cid}>
         <Card
             title={ item.project ? `${item.owner}/${item.project}` : `${item.owner}`}
             style={{ height: '100%' }}
@@ -129,10 +125,11 @@ const ItemPerProvider = ({provId, item} : ItemPerProviderProps) => {
                         }).then(() => {
                             setIsDeleted(true)
                             setIsDeleting(false)
-                            window.location.reload()
+                            window.location.reload() // TODO: use SWR to refresh the list
                         }).catch((err) => {
                             setIsDeleting(false)
-                            message.error(err.message)
+                            console.error(err)
+                            // message.error(err.message)
                         })
                     }}
                 >

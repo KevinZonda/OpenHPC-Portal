@@ -9,7 +9,7 @@ const { Title } = Typography
 
 export const CreatePage = () => {
     const [form] = Form.useForm()
-    const [enableRds, setEnableRds] = useState(true)
+    const [enableRds, setEnableRds] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
 
