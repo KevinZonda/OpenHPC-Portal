@@ -10,6 +10,19 @@ export const getApiKey = () => {
     return localStorage.getItem('apiKey') || ''
 }
 
+export const getHTTPEntry = (port: string | undefined = undefined) => {
+    const local = localStorage.getItem('httpEntry')
+    if (!port) return local || ''
+    if (local) {
+        return local.replace('$PORT', port)
+    }
+    return ''
+}
+
+export const setHTTPEntry = (entry: string) => {
+    localStorage.setItem('httpEntry', entry)
+}
+
 const initApiConfig = (apiUrl : string, apiKey : string) => {
     return new DefaultApi(new Configuration({
         basePath: apiUrl,

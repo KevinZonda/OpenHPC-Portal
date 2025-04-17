@@ -1,16 +1,18 @@
 import { Form, Input, Button, Typography, InputNumber } from 'antd'
 import { useState } from 'react'
-import { getApiUrl, getApiKey, initApi, getMetricsFreshTime } from '../shared'
+import { getApiUrl, getApiKey, initApi, getMetricsFreshTime, getHTTPEntry } from '../shared'
 const { Title } = Typography
 
 export const SettingsPage = () => {
     const [apiUrl, setApiUrl] = useState(getApiUrl())
     const [apiKey, setApiKey] = useState(getApiKey())
     const [metricsFreshTime, setMetricsFreshTime] = useState(getMetricsFreshTime())
-    const onFinish = (values: {apiUrl: string, apiKey: string, metricsFreshTime: number}) => {
+    const [httpEntry, setHttpEntry] = useState(getHTTPEntry())
+    const onFinish = (values: {apiUrl: string, apiKey: string, metricsFreshTime: number, httpEntry: string}) => {
         localStorage.setItem('apiUrl', values.apiUrl)
         localStorage.setItem('apiKey', values.apiKey)
         localStorage.setItem('metricsFreshTime', values.metricsFreshTime.toString())
+        localStorage.setItem('httpEntry', values.httpEntry)
         initApi(values.apiUrl, values.apiKey)
     }
     return <div>
@@ -22,14 +24,17 @@ export const SettingsPage = () => {
             <Form.Item label="API Key" name="apiKey" initialValue={apiKey}>
                 <Input value={apiKey} onChange={(e)  => setApiKey(e.target.value)} />
             </Form.Item>
-            <Form.Item label="Metrics Fresh Time" name="metricsFreshTime" initialValue={getMetricsFreshTime()}>
+            <Form.Item label="Metrics Refresh Time" name="metricsFreshTime" initialValue={getMetricsFreshTime()}>
                 <InputNumber min={500} max={10000} defaultValue={getMetricsFreshTime()} onChange={(value) => {
                     setMetricsFreshTime(value || 1000)
                 }} />
             </Form.Item>
+            <Form.Item label="VM HTTP Entry" name="httpEntry" initialValue={httpEntry}>
+                <Input value={httpEntry} onChange={(e) => setHttpEntry(e.target.value)} />
+            </Form.Item>
         </Form>
         <Button type="primary" onClick={() => {
-            onFinish({apiUrl, apiKey, metricsFreshTime})
+            onFinish({apiUrl, apiKey, metricsFreshTime, httpEntry})
         }}>Save</Button>
     </div>
 }

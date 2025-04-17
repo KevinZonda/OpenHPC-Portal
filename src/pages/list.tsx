@@ -1,9 +1,9 @@
 import useSWR from "swr"
-import { api } from "../shared"
+import { api, getHTTPEntry } from "../shared"
 import { VMListProvider, VMListItem } from "../api/models"
 import { Card, Typography, Space, Row, Col, Spin, Alert, Tag, Button, Popconfirm, Popover } from 'antd'
-import { CloseOutlined, ContainerOutlined, KeyOutlined, PlusOutlined, ReloadOutlined, SettingOutlined, BarChartOutlined } from '@ant-design/icons'
-import { useNavigate } from "react-router-dom"
+import { CloseOutlined, ContainerOutlined, KeyOutlined, PlusOutlined, ReloadOutlined, SettingOutlined, BarChartOutlined, ExperimentOutlined } from '@ant-design/icons'
+import { Link, useNavigate } from "react-router-dom"
 import { useState } from "react" 
 import { PerformanceMetrics } from "../components/AutoRefresh"
 const { Title } = Typography
@@ -22,7 +22,7 @@ const CreateVMBar = ({ children } : CreateVMBarProps) => {
                 window.location.reload()
             }}></Button>
             <Button icon={<SettingOutlined />} onClick={() => navigate('/settings')}></Button>
-            <Button icon={<BarChartOutlined />} onClick={() => setShowMetrics(!showMetrics)}></Button>
+            <Button icon={<BarChartOutlined />} type={showMetrics ? "primary" : "default"} onClick={() => setShowMetrics(!showMetrics)}></Button>
         </Space>
         {showMetrics && <PerformanceMetrics />}
         {children}
@@ -84,6 +84,18 @@ const ItemPerProvider = ({provId, item} : ItemPerProviderProps) => {
     const [openToken, setOpenToken] = useState(false);
     const [token, setToken] = useState<string[]>([])
 
+    let jupyterAccess = ''
+    const ports = item.port && item.port.length > 0 ? item.port.map((p) => {
+        const split = p.host.split(':')
+        const is_ssh = p.container.endsWith(':22')
+        if (!is_ssh) {
+            jupyterAccess = getHTTPEntry(split[split.length - 1])
+        }
+        return {port: split[split.length - 1], is_ssh}
+    }) : []
+
+    const rds = item.mount && item.mount.length > 0 ? item.mount : []
+
     return isDeleted ? <>Deleted</> : <Col xs={24} sm={12} md={8} lg={6} key={item.cid}>
         <Card
             title={ item.project ? `${item.owner}/${item.project}` : `${item.owner}`}
@@ -111,11 +123,23 @@ const ItemPerProvider = ({provId, item} : ItemPerProviderProps) => {
                     {item.project && <Tag color="cyan">Project: {item.project}</Tag>}
                     <Tag color="purple">CID: {shortCID(item.cid)}</Tag>
                     <Tag color="green">Image: {item.image}</Tag>
+                    {
+                        ports.length > 0 && ports.map((p) => {
+                            return <Tag color={p.is_ssh ? 'red' : 'orange'}>{p.is_ssh ? 'SSH' : 'HTTP'}: {p.port}</Tag>
+                        })
+                    }
                 </Space>
                 <span>
                     <span><strong>Status:</strong> {item.status}</span><br/>
                     <span><strong>SC:</strong> {item.sc}</span><br/>
                     <span><strong>SvcTag:</strong> {item.svcTag}</span>
+                    {
+                        rds.length > 0 && rds.map((r) => {
+                            return (<>
+                                <br/><span><strong>Mount:</strong> {r.container} {r.readonly ? '(RO)' : '(RW)'}</span>
+                            </>)
+                        })
+                    }
                 </span>
                 <Space>
                 <Popconfirm
@@ -169,6 +193,21 @@ const ItemPerProvider = ({provId, item} : ItemPerProviderProps) => {
                 >
                     <Button size="small" icon={<KeyOutlined />} />
                 </Popover>
+
+                {jupyterAccess && (
+                <Popover
+                    content={
+                        <>
+                        {
+                        <Link target="_blank" to={jupyterAccess}>{jupyterAccess}</Link>
+                        }
+                        </>
+                    }
+                    trigger="click"
+                >
+                        <Button size="small" icon={<ExperimentOutlined />} />
+                    </Popover>
+                )}
                 </Space>
             </Space>)
             }
