@@ -50,6 +50,20 @@ export const CreatePage = () => {
                                 <Select.Option value="podman">Podman</Select.Option>
                             </Select>
                         </Form.Item>
+
+                        <Form.Item 
+                            label="Image" 
+                            name="image"
+                            tooltip="Select your container image"
+                            rules={[{ required: true, message: 'Please select a image!' }]}
+                            initialValue="kevinzonda/notebook-iso"
+                        >
+                            <Select>
+                                <Select.Option value="kevinzonda/notebook-iso">Jupyter Notebook with Isolation Environment</Select.Option>
+                                <Select.Option value="kevinzonda/notebook">Jupyter Notebook (Stable)</Select.Option>
+                            </Select>
+                        </Form.Item>
+
                         <Form.Item 
                             label="Owner" 
                             name="owner"
@@ -64,19 +78,6 @@ export const CreatePage = () => {
                             tooltip="Name of your project"
                         >
                             <Input />
-                        </Form.Item>
-
-                        <Form.Item 
-                            label="Image" 
-                            name="image"
-                            tooltip="Select your container image"
-                            rules={[{ required: true, message: 'Please select a image!' }]}
-                            initialValue="kevinzonda/notebook-iso"
-                        >
-                            <Select>
-                                <Select.Option value="kevinzonda/notebook-iso">Jupyter Notebook with Isolation Environment</Select.Option>
-                                <Select.Option value="kevinzonda/notebook">Jupyter Notebook (Stable)</Select.Option>
-                            </Select>
                         </Form.Item>
 
                         <Form.Item 
