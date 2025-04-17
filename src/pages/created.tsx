@@ -16,19 +16,19 @@ export const CreatedPage = () => {
             <Result
                 status="success"
                 title="VM Created Successfully"
-                subTitle="Your VM is ready to use. You can access it via the Jupyter Notebook or SSH."
+                subTitle="Your VM is ready to use. You can access it via the Jupyter Notebook or SSH (if available)."
                 extra={[
                     <>
                         <Card>
-                                <Descriptions column={1}>
+                            <Descriptions column={1}>
                                 <Descriptions.Item label="Service Tag">{resp?.svcTag}</Descriptions.Item>
                                 <Descriptions.Item label="Jupyter HTTP">{resp?.http}</Descriptions.Item>
-                                <Descriptions.Item label="SSH">{resp?.ssh}</Descriptions.Item>
+                                {(resp?.ssh && resp?.ssh !== '') ? <Descriptions.Item label="SSH">{resp?.ssh}</Descriptions.Item> : null}
                                 <Descriptions.Item label="Token/Password">{resp?.token}</Descriptions.Item>
-                                <Descriptions.Item label="RDS Mount">{resp?.rdsAt}</Descriptions.Item>
+                                {(resp?.rdsAt && resp?.rdsAt !== '') ? <Descriptions.Item label="RDS Mount">{resp?.rdsAt}</Descriptions.Item> : null}
                             </Descriptions>
                         </Card><br/>
-                        <Button type="primary" key="jupyter" onClick={() => {
+                        <Button type="primary" key="jupyter" disabled={!resp?.http} onClick={() => {
                             window.open(resp?.http, '_blank')
                         }}>
                             Go to Jupyter Notebook
@@ -60,6 +60,7 @@ export const CreatedPage = () => {
                                 <Descriptions.Item label="Provider">{req?.provider}</Descriptions.Item>
                                 <Descriptions.Item label="Owner">{req?.owner}</Descriptions.Item>
                                 <Descriptions.Item label="Project">{req?.project}</Descriptions.Item>
+                                <Descriptions.Item label="Image">{req?.image}</Descriptions.Item>
                                 <Descriptions.Item label="RDS Enabled">{req?.enableRds ? 'Yes' : 'No'}</Descriptions.Item>
                                 {req?.enableRds && (
                                     <Descriptions.Item label="RDS Folder">{req?.rdsFolder}</Descriptions.Item>

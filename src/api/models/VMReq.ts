@@ -30,6 +30,12 @@ export interface VMReq {
      * @type {string}
      * @memberof VMReq
      */
+    image?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof VMReq
+     */
     owner: string;
     /**
      * 
@@ -81,6 +87,7 @@ export function VMReqFromJSONTyped(json: any, ignoreDiscriminator: boolean): VMR
     return {
         
         'provider': json['provider'],
+        'image': json['image'] == null ? undefined : json['image'],
         'owner': json['owner'],
         'project': json['project'],
         'enableRds': json['enable_rds'],
@@ -101,6 +108,7 @@ export function VMReqToJSONTyped(value?: VMReq | null, ignoreDiscriminator: bool
     return {
         
         'provider': value['provider'],
+        'image': value['image'],
         'owner': value['owner'],
         'project': value['project'],
         'enable_rds': value['enableRds'],

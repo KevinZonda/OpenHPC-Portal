@@ -75,6 +75,12 @@ export interface VMListItem {
      * @memberof VMListItem
      */
     project: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof VMListItem
+     */
+    image: string;
 }
 
 /**
@@ -89,6 +95,7 @@ export function instanceOfVMListItem(value: object): value is VMListItem {
     if (!('status' in value) || value['status'] === undefined) return false;
     if (!('owner' in value) || value['owner'] === undefined) return false;
     if (!('project' in value) || value['project'] === undefined) return false;
+    if (!('image' in value) || value['image'] === undefined) return false;
     return true;
 }
 
@@ -110,6 +117,7 @@ export function VMListItemFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'status': json['status'],
         'owner': json['owner'],
         'project': json['project'],
+        'image': json['image'],
     };
 }
 
@@ -132,6 +140,7 @@ export function VMListItemToJSONTyped(value?: VMListItem | null, ignoreDiscrimin
         'status': value['status'],
         'owner': value['owner'],
         'project': value['project'],
+        'image': value['image'],
     };
 }
 

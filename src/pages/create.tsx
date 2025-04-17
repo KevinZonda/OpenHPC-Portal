@@ -65,6 +65,20 @@ export const CreatePage = () => {
                         >
                             <Input />
                         </Form.Item>
+
+                        <Form.Item 
+                            label="Image" 
+                            name="image"
+                            tooltip="Select your container image"
+                            rules={[{ required: true, message: 'Please select a image!' }]}
+                            initialValue="kevinzonda/notebook-iso"
+                        >
+                            <Select>
+                                <Select.Option value="kevinzonda/notebook-iso">Jupyter Notebook with Isolation Environment</Select.Option>
+                                <Select.Option value="kevinzonda/notebook">Jupyter Notebook (Stable)</Select.Option>
+                            </Select>
+                        </Form.Item>
+
                         <Form.Item 
                             label="Shared Memory (shm)" 
                             name="shm"
@@ -128,6 +142,7 @@ export const CreatePage = () => {
                                             provider: values.provider,
                                             owner: values.owner,
                                             project: values.project,
+                                            image: values.image,
                                             enableRds: enableRds,
                                             rdsFolder: enableRds ? values.rdsFolder : undefined,
                                             shm: values.shm

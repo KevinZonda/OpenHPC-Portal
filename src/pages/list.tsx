@@ -110,6 +110,7 @@ const ItemPerProvider = ({provId, item} : ItemPerProviderProps) => {
                     <Tag color="blue">Owner: {item.owner}</Tag>
                     {item.project && <Tag color="cyan">Project: {item.project}</Tag>}
                     <Tag color="purple">CID: {shortCID(item.cid)}</Tag>
+                    <Tag color="green">Image: {item.image}</Tag>
                 </Space>
                 <span>
                     <span><strong>Status:</strong> {item.status}</span><br/>

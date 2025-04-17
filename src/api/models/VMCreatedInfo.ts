@@ -30,6 +30,12 @@ export interface VMCreatedInfo {
      * @type {string}
      * @memberof VMCreatedInfo
      */
+    image: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof VMCreatedInfo
+     */
     rdsAt: string;
     /**
      * 
@@ -68,6 +74,7 @@ export interface VMCreatedInfo {
  */
 export function instanceOfVMCreatedInfo(value: object): value is VMCreatedInfo {
     if (!('cid' in value) || value['cid'] === undefined) return false;
+    if (!('image' in value) || value['image'] === undefined) return false;
     if (!('rdsAt' in value) || value['rdsAt'] === undefined) return false;
     if (!('token' in value) || value['token'] === undefined) return false;
     if (!('ssh' in value) || value['ssh'] === undefined) return false;
@@ -88,6 +95,7 @@ export function VMCreatedInfoFromJSONTyped(json: any, ignoreDiscriminator: boole
     return {
         
         'cid': json['cid'],
+        'image': json['image'],
         'rdsAt': json['rds_at'],
         'token': json['token'],
         'ssh': json['ssh'],
@@ -109,6 +117,7 @@ export function VMCreatedInfoToJSONTyped(value?: VMCreatedInfo | null, ignoreDis
     return {
         
         'cid': value['cid'],
+        'image': value['image'],
         'rds_at': value['rdsAt'],
         'token': value['token'],
         'ssh': value['ssh'],
