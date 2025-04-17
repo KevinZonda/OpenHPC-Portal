@@ -160,8 +160,7 @@ const ItemPerProvider = ({provId, item} : ItemPerProviderProps) => {
                             }
                         }).then(() => {
                             setIsDeleted(true)
-                            setIsDeleting(false)
-                            window.location.reload() // TODO: use SWR to refresh the list
+                            setIsDeleting(false) // TODO: use SWR to refresh the list
                         }).catch((err) => {
                             setIsDeleting(false)
                             console.error(err)
