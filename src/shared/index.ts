@@ -10,6 +10,19 @@ export const getApiKey = () => {
     return localStorage.getItem('apiKey') || ''
 }
 
+export const getSSHEntry = (port: string | undefined = undefined) => {
+    const local = localStorage.getItem('sshEntry')
+    if (!port) return local || ''
+    if (local) {
+        return local.replace('$PORT', port)
+    }
+    return ''
+}
+
+export const setSSHEntry = (entry: string) => {
+    localStorage.setItem('sshEntry', entry)
+}
+
 export const getHTTPEntry = (port: string | undefined = undefined) => {
     const local = localStorage.getItem('httpEntry')
     if (!port) return local || ''

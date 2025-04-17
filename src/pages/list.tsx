@@ -1,11 +1,14 @@
 import useSWR from "swr"
-import { api, getHTTPEntry } from "../shared"
+import { api, getHTTPEntry, getSSHEntry } from "../shared"
 import { VMListProvider, VMListItem } from "../api/models"
 import { Card, Typography, Space, Row, Col, Spin, Alert, Tag, Button, Popconfirm, Popover } from 'antd'
-import { CloseOutlined, ContainerOutlined, KeyOutlined, PlusOutlined, ReloadOutlined, SettingOutlined, BarChartOutlined, ExperimentOutlined } from '@ant-design/icons'
+import { CloseOutlined, ContainerOutlined, PlusOutlined, ReloadOutlined, SettingOutlined, BarChartOutlined } from '@ant-design/icons'
 import { Link, useNavigate } from "react-router-dom"
 import { useState } from "react" 
 import { PerformanceMetrics } from "../components/AutoRefresh"
+import { SiJupyter } from 'react-icons/si'
+import { LuKey } from "react-icons/lu"
+import { RiTerminalFill } from "react-icons/ri"
 const { Title } = Typography
 
 interface CreateVMBarProps {
@@ -85,11 +88,14 @@ const ItemPerProvider = ({provId, item} : ItemPerProviderProps) => {
     const [token, setToken] = useState<string[]>([])
 
     let jupyterAccess = ''
+    let sshAccess = ''
     const ports = item.port && item.port.length > 0 ? item.port.map((p) => {
         const split = p.host.split(':')
         const is_ssh = p.container.endsWith(':22')
         if (!is_ssh) {
             jupyterAccess = getHTTPEntry(split[split.length - 1])
+        } else {
+            sshAccess = getSSHEntry(split[split.length - 1])
         }
         return {port: split[split.length - 1], is_ssh}
     }) : []
@@ -191,22 +197,26 @@ const ItemPerProvider = ({provId, item} : ItemPerProviderProps) => {
                         }
                     }}
                 >
-                    <Button size="small" icon={<KeyOutlined />} />
+                    <Button size="small" icon={<LuKey />} />
                 </Popover>
 
                 {jupyterAccess && (
                 <Popover
                     content={
-                        <>
-                        {
                         <Link target="_blank" to={jupyterAccess}>{jupyterAccess}</Link>
-                        }
-                        </>
                     }
                     trigger="click"
                 >
-                        <Button size="small" icon={<ExperimentOutlined />} />
+                        <Button size="small" icon={<SiJupyter />} />
                     </Popover>
+                )}
+                {sshAccess && (
+                <Popover
+                    content={sshAccess}
+                    trigger="click"
+                >
+                    <Button size="small" icon={<RiTerminalFill />} />
+                </Popover>
                 )}
                 </Space>
             </Space>)

@@ -1,6 +1,6 @@
 import { Form, Input, Button, Typography, InputNumber } from 'antd'
 import { useState } from 'react'
-import { getApiUrl, getApiKey, initApi, getMetricsFreshTime, getHTTPEntry } from '../shared'
+import { getApiUrl, getApiKey, initApi, getMetricsFreshTime, getHTTPEntry, getSSHEntry } from '../shared'
 const { Title } = Typography
 
 export const SettingsPage = () => {
@@ -8,11 +8,13 @@ export const SettingsPage = () => {
     const [apiKey, setApiKey] = useState(getApiKey())
     const [metricsFreshTime, setMetricsFreshTime] = useState(getMetricsFreshTime())
     const [httpEntry, setHttpEntry] = useState(getHTTPEntry())
-    const onFinish = (values: {apiUrl: string, apiKey: string, metricsFreshTime: number, httpEntry: string}) => {
+    const [sshEntry, setSshEntry] = useState(getSSHEntry())
+    const onFinish = (values: {apiUrl: string, apiKey: string, metricsFreshTime: number, httpEntry: string, sshEntry: string}) => {
         localStorage.setItem('apiUrl', values.apiUrl)
         localStorage.setItem('apiKey', values.apiKey)
         localStorage.setItem('metricsFreshTime', values.metricsFreshTime.toString())
         localStorage.setItem('httpEntry', values.httpEntry)
+        localStorage.setItem('sshEntry', values.sshEntry)
         initApi(values.apiUrl, values.apiKey)
     }
     return <div>
@@ -32,9 +34,12 @@ export const SettingsPage = () => {
             <Form.Item label="VM HTTP Entry" name="httpEntry" initialValue={httpEntry}>
                 <Input value={httpEntry} onChange={(e) => setHttpEntry(e.target.value)} />
             </Form.Item>
+            <Form.Item label="VM SSH Entry" name="sshEntry" initialValue={sshEntry}>
+                <Input value={sshEntry} onChange={(e) => setSshEntry(e.target.value)} />
+            </Form.Item>
         </Form>
         <Button type="primary" onClick={() => {
-            onFinish({apiUrl, apiKey, metricsFreshTime, httpEntry})
+            onFinish({apiUrl, apiKey, metricsFreshTime, httpEntry, sshEntry})
         }}>Save</Button>
     </div>
 }
