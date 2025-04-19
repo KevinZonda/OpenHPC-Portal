@@ -80,6 +80,45 @@ export const CreatePage = () => {
                             <Input />
                         </Form.Item>
 
+                        <Form.Item
+                            label="GPU" 
+                            name="gpu"
+                            tooltip="GPU for your VM"
+                            initialValue={false}
+                        >
+                            <Switch />
+                        </Form.Item>
+
+                        <Form.Item 
+                            label="Max Memory" 
+                            name="maxMem"
+                            tooltip="Max memory for your VM. 0 for no limit."
+                            initialValue={0}
+                        >
+                            <Slider
+                                min={0}
+                                max={96}
+                                step={null}
+                                marks={{
+                                    0: 'Unlimited',
+                                    2: '2GB',
+                                    4: '4GB',
+                                    8: '8GB',
+                                    16: '16GB',
+                                    32: '32GB',
+                                    48: '48GB',
+                                    64: '64GB',
+                                    80: '80GB',
+                                    96: '96GB',
+                                }}
+                                tooltip={{
+                                    formatter: (value) => {
+                                        return value && value !== 0 ? `${value}GB` : 'Unlimited'
+                                    }
+                                }}
+                            />
+                        </Form.Item>
+
                         <Form.Item 
                             label="Shared Memory (shm)" 
                             name="shm"
@@ -144,6 +183,8 @@ export const CreatePage = () => {
                                             owner: values.owner,
                                             project: values.project,
                                             image: values.image,
+                                            gpu: values.gpu,
+                                            maxMem: values.maxMem * 1024,
                                             enableRds: enableRds,
                                             rdsFolder: enableRds ? values.rdsFolder : undefined,
                                             shm: values.shm

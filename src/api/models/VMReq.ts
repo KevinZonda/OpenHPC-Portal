@@ -61,6 +61,18 @@ export interface VMReq {
      * @memberof VMReq
      */
     shm: number;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof VMReq
+     */
+    gpu: boolean;
+    /**
+     * 
+     * @type {number}
+     * @memberof VMReq
+     */
+    maxMem: number;
 }
 
 /**
@@ -73,6 +85,8 @@ export function instanceOfVMReq(value: object): value is VMReq {
     if (!('enableRds' in value) || value['enableRds'] === undefined) return false;
     if (!('rdsFolder' in value) || value['rdsFolder'] === undefined) return false;
     if (!('shm' in value) || value['shm'] === undefined) return false;
+    if (!('gpu' in value) || value['gpu'] === undefined) return false;
+    if (!('maxMem' in value) || value['maxMem'] === undefined) return false;
     return true;
 }
 
@@ -93,6 +107,8 @@ export function VMReqFromJSONTyped(json: any, ignoreDiscriminator: boolean): VMR
         'enableRds': json['enable_rds'],
         'rdsFolder': json['rds_folder'],
         'shm': json['shm'],
+        'gpu': json['gpu'],
+        'maxMem': json['max_mem'],
     };
 }
 
@@ -114,6 +130,8 @@ export function VMReqToJSONTyped(value?: VMReq | null, ignoreDiscriminator: bool
         'enable_rds': value['enableRds'],
         'rds_folder': value['rdsFolder'],
         'shm': value['shm'],
+        'gpu': value['gpu'],
+        'max_mem': value['maxMem'],
     };
 }
 

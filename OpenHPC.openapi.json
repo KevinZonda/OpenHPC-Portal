@@ -433,6 +433,12 @@
           },
           "shm": {
             "type": "integer"
+          },
+          "gpu": {
+            "type": "boolean"
+          },
+          "max_mem": {
+            "type": "integer"
           }
         },
         "required": [
@@ -441,7 +447,9 @@
           "project",
           "enable_rds",
           "rds_folder",
-          "shm"
+          "shm",
+          "gpu",
+          "max_mem"
         ]
       },
       "VMCreatedInfo": {
@@ -645,12 +653,16 @@
           },
           "provider": {
             "type": "string"
+          },
+          "gpu": {
+            "type": "boolean"
           }
         },
         "required": [
           "shm",
           "id",
-          "provider"
+          "provider",
+          "gpu"
         ]
       }
     },

@@ -94,6 +94,15 @@ export const UpgradePage = () => {
                             <Input disabled={true} />
                         </Form.Item>
 
+                        <Form.Item
+                            label="GPU" 
+                            name="gpu"
+                            tooltip="GPU for your VM"
+                            initialValue={false}
+                        >
+                            <Switch />
+                        </Form.Item>
+
                         <Form.Item 
                             label="Shared Memory (shm)" 
                             name="shm"
@@ -157,7 +166,8 @@ export const UpgradePage = () => {
                                         const request : VMUpgradeReq = {
                                             provider: values.provider,
                                             id: item.cid,
-                                            shm: values.shm
+                                            shm: values.shm,
+                                            gpu: values.gpu
                                         }
                                         api.vmUpgradePost({
                                             vMUpgradeReq: request

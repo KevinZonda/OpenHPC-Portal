@@ -37,6 +37,12 @@ export interface VMUpgradeReq {
      * @memberof VMUpgradeReq
      */
     provider: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof VMUpgradeReq
+     */
+    gpu: boolean;
 }
 
 /**
@@ -46,6 +52,7 @@ export function instanceOfVMUpgradeReq(value: object): value is VMUpgradeReq {
     if (!('id' in value) || value['id'] === undefined) return false;
     if (!('shm' in value) || value['shm'] === undefined) return false;
     if (!('provider' in value) || value['provider'] === undefined) return false;
+    if (!('gpu' in value) || value['gpu'] === undefined) return false;
     return true;
 }
 
@@ -62,6 +69,7 @@ export function VMUpgradeReqFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'id': json['id'],
         'shm': json['shm'],
         'provider': json['provider'],
+        'gpu': json['gpu'],
     };
 }
 
@@ -79,6 +87,7 @@ export function VMUpgradeReqToJSONTyped(value?: VMUpgradeReq | null, ignoreDiscr
         'id': value['id'],
         'shm': value['shm'],
         'provider': value['provider'],
+        'gpu': value['gpu'],
     };
 }
 
