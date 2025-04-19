@@ -1,5 +1,5 @@
 import { Card, Descriptions, Button, Result } from "antd"
-import { useLocation, useNavigate } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import { VMReq, VMCreatedInfo } from "../api"
 import { useState } from "react"
 
@@ -10,19 +10,20 @@ export const CreatedPage = () => {
     const resp : VMCreatedInfo = vmData
     const navigate = useNavigate()
     const [showDetails, setShowDetails] = useState(false)
+    const { isUpgrade } = location.state || {}
 
     return (
-        <div style={{ maxWidth: 800, margin: '0 auto', padding: '24px' }}>
+        <div style={{ maxWidth: 800, margin: '0 auto', paddingTop: '24px' }}>
             <Result
                 status="success"
-                title="VM Created Successfully"
+                title={isUpgrade ? "VM Upgraded Successfully" : "VM Created Successfully"}
                 subTitle="Your VM is ready to use. You can access it via the Jupyter Notebook or SSH (if available)."
                 extra={[
                     <>
                         <Card>
                             <Descriptions column={1}>
                                 <Descriptions.Item label="Service Tag">{resp?.svcTag}</Descriptions.Item>
-                                <Descriptions.Item label="Jupyter HTTP">{resp?.http}</Descriptions.Item>
+                                <Descriptions.Item label="Jupyter HTTP"><Link target="_blank" to={resp?.http}>{resp?.http}</Link></Descriptions.Item>
                                 {(resp?.ssh && resp?.ssh !== '') ? <Descriptions.Item label="SSH">{resp?.ssh}</Descriptions.Item> : null}
                                 <Descriptions.Item label="Token/Password">{resp?.token}</Descriptions.Item>
                                 {(resp?.rdsAt && resp?.rdsAt !== '') ? <Descriptions.Item label="RDS Mount">{resp?.rdsAt}</Descriptions.Item> : null}

@@ -1,21 +1,23 @@
 import { Typography, Form, Select, Input, Button, Switch, Card, Space, Spin, message, Slider } from "antd"
 import { useState } from "react"
 import { api } from "../shared"
-import { useNavigate } from "react-router-dom"
-import { VMReq } from "../api"
+import { useLocation, useNavigate } from "react-router-dom"
+import { VMUpgradeReq } from "../api"
 
 
 const { Title } = Typography
 
-export const CreatePage = () => {
+export const UpgradePage = () => {
     const [form] = Form.useForm()
-    const [enableRds, setEnableRds] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
+    const location = useLocation()
+
+    const { provider, item } = location.state || {}
 
     if (isLoading) {
         return <>
-        <Title level={2}>Create VM</Title>
+        <Title level={2}>Upgrade VM</Title>
         <div style={{ maxWidth: 600, margin: '0 auto', padding: '24px' }}>
             
             <Space direction="vertical" size="large" style={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh' }}>
@@ -27,7 +29,7 @@ export const CreatePage = () => {
 
     return (
         <>
-        <Title level={2}>Create VM</Title>
+        <Title level={2}>Upgrade VM</Title>
         <div style={{ maxWidth: 600, margin: '0 auto', paddingTop: '24px' }}>
             
             <Space direction="vertical" size="large" style={{ width: '100%' }}>
@@ -43,12 +45,22 @@ export const CreatePage = () => {
                             name="provider"
                             tooltip="Select your container provider"
                             rules={[{ required: true, message: 'Please select a provider!' }]}
-                            initialValue="podman"
+                            initialValue={provider}
                         >
-                            <Select>
+                            <Select disabled={true}>
                                 <Select.Option value="docker">Docker</Select.Option>
                                 <Select.Option value="podman">Podman</Select.Option>
                             </Select>
+                        </Form.Item>
+
+                        <Form.Item 
+                            label="Service Tag" 
+                            name="svcTag"
+                            tooltip="Service Tag of your VM"
+                            rules={[{ required: true }]}
+                            initialValue={item.svcTag}
+                        >
+                            <Input disabled={true} />
                         </Form.Item>
 
                         <Form.Item 
@@ -56,9 +68,9 @@ export const CreatePage = () => {
                             name="image"
                             tooltip="Select your container image"
                             rules={[{ required: true, message: 'Please select a image!' }]}
-                            initialValue="kevinzonda/notebook-iso"
+                            initialValue={item.image}
                         >
-                            <Select>
+                            <Select disabled={true}>
                                 <Select.Option value="kevinzonda/notebook-iso">Jupyter Notebook with Isolation Environment</Select.Option>
                                 <Select.Option value="kevinzonda/notebook">Jupyter Notebook (Stable)</Select.Option>
                             </Select>
@@ -69,15 +81,17 @@ export const CreatePage = () => {
                             name="owner"
                             rules={[{ required: true, message: 'Please input the owner name!' }]}
                             tooltip="The owner of this VM instance"
+                            initialValue={item.owner}
                         >
-                            <Input />
+                            <Input disabled={true} />
                         </Form.Item>
                         <Form.Item 
                             label="Project Name" 
                             name="project"
                             tooltip="Name of your project"
+                            initialValue={item.project}
                         >
-                            <Input />
+                            <Input disabled={true} />
                         </Form.Item>
 
                         <Form.Item 
@@ -119,15 +133,16 @@ export const CreatePage = () => {
                             name="enableRds"
                             tooltip="RDS is persistent storage for your VM"
                         >
-                            <Switch defaultChecked={enableRds} onChange={(checked) => setEnableRds(checked)} />
+                            <Switch defaultChecked={item.mount.length > 0} disabled={true}/>
                         </Form.Item>
-                        {enableRds && (
+                        {item.mount.length > 0 && (
                             <Form.Item 
                                 label="RDS Subfolder" 
                                 name="rdsFolder"
                                 tooltip="Subfolder for RDS"
+                                initialValue={item.mount[0].host}
                             >
-                                <Input />
+                                <Input disabled={true} />
                             </Form.Item>
                         )}
                         
@@ -139,24 +154,21 @@ export const CreatePage = () => {
                                 onClick={() => {
                                     form.validateFields().then((values) => {
                                         setIsLoading(true)
-                                        const request : VMReq = {
+                                        const request : VMUpgradeReq = {
                                             provider: values.provider,
-                                            owner: values.owner,
-                                            project: values.project,
-                                            image: values.image,
-                                            enableRds: enableRds,
-                                            rdsFolder: enableRds ? values.rdsFolder : undefined,
+                                            id: item.cid,
                                             shm: values.shm
                                         }
-                                        api.vmRequestPost({
-                                            vMReq: request
+                                        api.vmUpgradePost({
+                                            vMUpgradeReq: request
                                         }).then((res) => {
                                             console.log(res)
                                             setIsLoading(false)
                                             navigate('/created', { 
                                                 state: { 
                                                     vmData: res,
-                                                    requestData: request 
+                                                    requestData: request,
+                                                    isUpgrade: true
                                                 } 
                                             })
                                         }).catch((err) => {
@@ -166,7 +178,7 @@ export const CreatePage = () => {
                                     })
                                 }}
                             >
-                                Create
+                                Upgrade
                             </Button>
                         </Form.Item>
                     </Form>

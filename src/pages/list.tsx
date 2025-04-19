@@ -9,6 +9,7 @@ import { PerformanceMetrics } from "../components/AutoRefresh"
 import { SiJupyter } from 'react-icons/si'
 import { LuKey } from "react-icons/lu"
 import { RiTerminalFill } from "react-icons/ri"
+import { GrUpgrade } from "react-icons/gr"
 const { Title } = Typography
 
 interface CreateVMBarProps {
@@ -86,6 +87,8 @@ const ItemPerProvider = ({provId, item} : ItemPerProviderProps) => {
     const [isDeleted, setIsDeleted] = useState(false)
     const [openToken, setOpenToken] = useState(false);
     const [token, setToken] = useState<string[]>([])
+
+    const navigate = useNavigate()
 
     let jupyterAccess = ''
     let sshAccess = ''
@@ -217,6 +220,13 @@ const ItemPerProvider = ({provId, item} : ItemPerProviderProps) => {
                     <Button size="small" icon={<RiTerminalFill />} />
                 </Popover>
                 )}
+                <Button size="small" icon={<GrUpgrade />} onClick={() => navigate(`/upgrade`, {
+                    state: {
+                        provider: provId,
+                        id: item.cid,
+                        item: item,
+                    }
+                })} />
                 </Space>
             </Space>)
             }

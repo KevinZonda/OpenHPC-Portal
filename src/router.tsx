@@ -3,7 +3,9 @@ import { App } from "./App";
 import { ListPage } from "./pages/list";
 import { CreatePage } from "./pages/create";
 import { CreatedPage } from "./pages/created";
-import { SettingsPage } from "./pages/sattings";
+import { SettingsPage } from "./pages/settings";
+import { UpgradePage } from "./pages/upgrade";
+
 export const Router = createBrowserRouter([
     {
         path: "/",
@@ -24,6 +26,10 @@ export const Router = createBrowserRouter([
             {
                 path: "/settings",
                 element: <SettingsPage />,
+            },
+            {
+                path: "/upgrade",
+                element: <UpgradePage />,
             },
         ],  
     },

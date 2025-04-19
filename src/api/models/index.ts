@@ -7,6 +7,7 @@ export * from './VMDelReq';
 export * from './VMListItem';
 export * from './VMListItemMount';
 export * from './VMListProvider';
+export * from './VMListRespInner';
 export * from './VMReq';
 export * from './VMTokenReq';
 export * from './VMTokenResp';

@@ -260,8 +260,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {}
+                  "$ref": "#/components/schemas/VMCreatedInfo"
                 }
               }
             },
@@ -516,7 +515,22 @@
       "VMListResp": {
         "type": "array",
         "items": {
-          "$ref": "#/components/schemas/VMListProvider"
+          "type": "object",
+          "properties": {
+            "provider": {
+              "type": "string"
+            },
+            "containers": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/VMListItem"
+              }
+            }
+          },
+          "required": [
+            "provider",
+            "containers"
+          ]
         }
       },
       "VMListProvider": {

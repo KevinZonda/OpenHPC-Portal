@@ -19,7 +19,7 @@ import type {
   Token,
   VMCreatedInfo,
   VMDelReq,
-  VMListProvider,
+  VMListRespInner,
   VMReq,
   VMTokenReq,
   VMTokenResp,
@@ -34,8 +34,8 @@ import {
     VMCreatedInfoToJSON,
     VMDelReqFromJSON,
     VMDelReqToJSON,
-    VMListProviderFromJSON,
-    VMListProviderToJSON,
+    VMListRespInnerFromJSON,
+    VMListRespInnerToJSON,
     VMReqFromJSON,
     VMReqToJSON,
     VMTokenReqFromJSON,
@@ -324,7 +324,7 @@ export class DefaultApi extends runtime.BaseAPI {
      * 
      * list
      */
-    async vmListGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<VMListProvider>>> {
+    async vmListGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<VMListRespInner>>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -340,14 +340,14 @@ export class DefaultApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(VMListProviderFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(VMListRespInnerFromJSON));
     }
 
     /**
      * 
      * list
      */
-    async vmListGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<VMListProvider>> {
+    async vmListGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<VMListRespInner>> {
         const response = await this.vmListGetRaw(initOverrides);
         return await response.value();
     }
@@ -426,7 +426,7 @@ export class DefaultApi extends runtime.BaseAPI {
      * 
      * VM upgrade
      */
-    async vmUpgradePostRaw(requestParameters: VmUpgradePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>> {
+    async vmUpgradePostRaw(requestParameters: VmUpgradePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<VMCreatedInfo>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -445,14 +445,14 @@ export class DefaultApi extends runtime.BaseAPI {
             body: VMUpgradeReqToJSON(requestParameters['vMUpgradeReq']),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse<any>(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => VMCreatedInfoFromJSON(jsonValue));
     }
 
     /**
      * 
      * VM upgrade
      */
-    async vmUpgradePost(requestParameters: VmUpgradePostRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object> {
+    async vmUpgradePost(requestParameters: VmUpgradePostRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<VMCreatedInfo> {
         const response = await this.vmUpgradePostRaw(requestParameters, initOverrides);
         return await response.value();
     }
