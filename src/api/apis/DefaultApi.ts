@@ -16,6 +16,7 @@
 import * as runtime from '../runtime';
 import type {
   LoginReq,
+  StatInfo,
   Token,
   VMCreatedInfo,
   VMDelReq,
@@ -28,6 +29,8 @@ import type {
 import {
     LoginReqFromJSON,
     LoginReqToJSON,
+    StatInfoFromJSON,
+    StatInfoToJSON,
     TokenFromJSON,
     TokenToJSON,
     VMCreatedInfoFromJSON,
@@ -136,6 +139,34 @@ export class DefaultApi extends runtime.BaseAPI {
      */
     async statCpuGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object> {
         const response = await this.statCpuGetRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * 
+     * stat
+     */
+    async statGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<StatInfo>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/stat`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => StatInfoFromJSON(jsonValue));
+    }
+
+    /**
+     * 
+     * stat
+     */
+    async statGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<StatInfo> {
+        const response = await this.statGetRaw(initOverrides);
         return await response.value();
     }
 

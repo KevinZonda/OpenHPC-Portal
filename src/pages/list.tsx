@@ -5,7 +5,7 @@ import { Card, Typography, Space, Row, Col, Spin, Alert, Tag, Button, Popconfirm
 import { CloseOutlined, ContainerOutlined, PlusOutlined, ReloadOutlined, SettingOutlined, BarChartOutlined } from '@ant-design/icons'
 import { Link, useNavigate } from "react-router-dom"
 import { useState } from "react" 
-import { PerformanceMetrics } from "../components/AutoRefresh"
+import { PerformanceMetrics, StatBar } from "../components/AutoRefresh"
 import { SiJupyter } from 'react-icons/si'
 import { LuKey } from "react-icons/lu"
 import { RiTerminalFill } from "react-icons/ri"
@@ -20,6 +20,7 @@ const CreateVMBar = ({ children } : CreateVMBarProps) => {
     const navigate = useNavigate()
     const [showMetrics, setShowMetrics] = useState(false)
     return <div>
+        <StatBar />
         <Space>
             <Button icon={<PlusOutlined />} type="primary" onClick={() => navigate('/create')}></Button>
             <Button icon={<ReloadOutlined />} onClick={() => {

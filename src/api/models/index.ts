@@ -1,6 +1,10 @@
 /* tslint:disable */
 /* eslint-disable */
+export * from './CPUStatInfo';
+export * from './GPUStatInfo';
 export * from './LoginReq';
+export * from './MemStatInfo';
+export * from './StatInfo';
 export * from './Token';
 export * from './VMCreatedInfo';
 export * from './VMDelReq';
