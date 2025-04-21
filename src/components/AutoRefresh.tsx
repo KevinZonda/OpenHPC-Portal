@@ -143,8 +143,8 @@ export const StatBar = () => {
                             format={percent => `GPU ${index}: ${percent}%`}
                         />
                         <Progress 
-                            percent={gpu.memUtil}
-                            strokeColor={getStrokeColor(gpu.memUtil)}
+                            percent={Math.round((gpu.mem.used / gpu.mem.total) * 100)}
+                            strokeColor={getStrokeColor((gpu.mem.used / gpu.mem.total) * 100)}
                             format={() => `${formatToGiB(gpu.mem.used, gpu.mem.unit)} GB / ${formatToGiB(gpu.mem.total, gpu.mem.unit)} GB`}
                         />
                     </div>
