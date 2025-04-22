@@ -22,6 +22,7 @@ import type {
   VMDelReq,
   VMListRespInner,
   VMReq,
+  VMReqAvailResources,
   VMTokenReq,
   VMTokenResp,
   VMUpgradeReq,
@@ -41,6 +42,8 @@ import {
     VMListRespInnerToJSON,
     VMReqFromJSON,
     VMReqToJSON,
+    VMReqAvailResourcesFromJSON,
+    VMReqAvailResourcesToJSON,
     VMTokenReqFromJSON,
     VMTokenReqToJSON,
     VMTokenRespFromJSON,
@@ -380,6 +383,38 @@ export class DefaultApi extends runtime.BaseAPI {
      */
     async vmListGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<VMListRespInner>> {
         const response = await this.vmListGetRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * 
+     * vm request info
+     */
+    async vmRequestAvailGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<VMReqAvailResources>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // apikey-header-Authorization authentication
+        }
+
+        const response = await this.request({
+            path: `/vm/request/avail`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => VMReqAvailResourcesFromJSON(jsonValue));
+    }
+
+    /**
+     * 
+     * vm request info
+     */
+    async vmRequestAvailGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<VMReqAvailResources> {
+        const response = await this.vmRequestAvailGetRaw(initOverrides);
         return await response.value();
     }
 

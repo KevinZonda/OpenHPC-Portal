@@ -3,6 +3,7 @@ import { useState } from "react"
 import { api } from "../shared"
 import { useNavigate } from "react-router-dom"
 import { VMReq } from "../api"
+import useSWR from "swr"
 
 
 const { Title } = Typography
@@ -11,9 +12,14 @@ export const CreatePage = () => {
     const [form] = Form.useForm()
     const [enableRds, setEnableRds] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
+    const [enableGpu, setEnableGpu] = useState(false)
+    const [enableAllGpu, setEnableAllGpu] = useState(true)
     const navigate = useNavigate()
+    const {data: hpcCfg, isLoading: isCfgLoading} = useSWR('/api/vm/request/avail', async () => {
+        return await api.vmRequestAvailGet()
+    })
 
-    if (isLoading) {
+    if (isLoading || isCfgLoading) {
         return <>
         <Title level={2}>Create VM</Title>
         <div style={{ maxWidth: 600, margin: '0 auto', padding: '24px' }}>
@@ -43,11 +49,12 @@ export const CreatePage = () => {
                             name="provider"
                             tooltip="Select your container provider"
                             rules={[{ required: true, message: 'Please select a provider!' }]}
-                            initialValue="podman"
+                            initialValue={hpcCfg?.providers[0]}
                         >
                             <Select>
-                                <Select.Option value="docker">Docker</Select.Option>
-                                <Select.Option value="podman">Podman</Select.Option>
+                                {hpcCfg?.providers.map((prov) => (
+                                    <Select.Option value={prov}>{prov}</Select.Option>
+                                ))}
                             </Select>
                         </Form.Item>
 
@@ -56,11 +63,12 @@ export const CreatePage = () => {
                             name="image"
                             tooltip="Select your container image"
                             rules={[{ required: true, message: 'Please select a image!' }]}
-                            initialValue="kevinzonda/notebook-iso"
+                            initialValue={hpcCfg?.images[0].image}
                         >
                             <Select>
-                                <Select.Option value="kevinzonda/notebook-iso">Jupyter Notebook with Isolation Environment</Select.Option>
-                                <Select.Option value="kevinzonda/notebook">Jupyter Notebook (Stable)</Select.Option>
+                                {hpcCfg?.images.map((img) => (
+                                    <Select.Option value={img.image}>{img.displayName}</Select.Option>
+                                ))}
                             </Select>
                         </Form.Item>
 
@@ -84,10 +92,46 @@ export const CreatePage = () => {
                             label="GPU" 
                             name="gpu"
                             tooltip="GPU for your VM"
-                            initialValue={false}
+                            initialValue={enableGpu}
+                            style={{ display: 'inline-block', width: 'calc(50% - 8px)', marginRight: '16px' }}
                         >
-                            <Switch />
+                            <Switch onChange={(checked) => setEnableGpu(checked)} />
                         </Form.Item>
+
+                        { enableGpu &&
+                            <Form.Item
+                                label="All GPUs" 
+                                name="allGpu"
+                                tooltip="GPU for your VM"
+                                initialValue={enableAllGpu}
+                                style={{ display: 'inline-block', width: 'calc(50% - 8px)' }}
+                            >
+                                <Switch onChange={(checked) => setEnableAllGpu(checked)} />
+                            </Form.Item>
+                        }
+
+                        {enableGpu && !enableAllGpu && (
+                            <Form.Item
+                                label="GPU" 
+                                name="gpuSelection"
+                                tooltip="Select GPUs for your VM"
+                                dependencies={['gpu']}
+                            >
+                                <Select
+                                    mode="multiple"
+                                    disabled={!enableGpu}
+                                    placeholder="Select GPUs"
+                                    style={{ width: '100%' }}
+                                >
+                                    {hpcCfg?.gpus.map((gpu) => (
+                                        <Select.Option key={gpu.gpuId} value={gpu.gpuId}>
+                                            {gpu.gpuId} - {gpu.displayName}
+                                        </Select.Option>
+                                    ))}
+                                </Select>
+                            </Form.Item>
+                        )}
+                        
 
                         <Form.Item 
                             label="Max Memory" 
