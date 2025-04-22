@@ -16,6 +16,7 @@ export * from './VMReq';
 export * from './VMReqAvailGPU';
 export * from './VMReqAvailImage';
 export * from './VMReqAvailResources';
+export * from './VMReqGPU';
 export * from './VMTokenReq';
 export * from './VMTokenResp';
 export * from './VMUpgradeReq';

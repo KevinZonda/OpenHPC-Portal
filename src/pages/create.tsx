@@ -90,7 +90,7 @@ export const CreatePage = () => {
 
                         <Form.Item
                             label="GPU" 
-                            name="gpu"
+                            name="enableGpu"
                             tooltip="GPU for your VM"
                             initialValue={enableGpu}
                             style={{ display: 'inline-block', width: 'calc(50% - 8px)', marginRight: '16px' }}
@@ -125,7 +125,7 @@ export const CreatePage = () => {
                                 >
                                     {hpcCfg?.gpus.map((gpu) => (
                                         <Select.Option key={gpu.gpuId} value={gpu.gpuId}>
-                                            {gpu.gpuId} - {gpu.displayName}
+                                            GPU {gpu.gpuId}: {gpu.displayName}
                                         </Select.Option>
                                     ))}
                                 </Select>
@@ -227,7 +227,11 @@ export const CreatePage = () => {
                                             owner: values.owner,
                                             project: values.project,
                                             image: values.image,
-                                            gpu: values.gpu,
+                                            enableGpu: values.enableGpu,
+                                            gpu: {
+                                                all: values.allGpu,
+                                                ids: values.gpuSelection
+                                            },
                                             maxMem: values.maxMem * 1024,
                                             enableRds: enableRds,
                                             rdsFolder: enableRds ? values.rdsFolder : undefined,

@@ -27,10 +27,10 @@ export interface VMReqAvailGPU {
     displayName: string;
     /**
      * 
-     * @type {string}
+     * @type {number}
      * @memberof VMReqAvailGPU
      */
-    gpuId: string;
+    gpuId: number;
 }
 
 /**
