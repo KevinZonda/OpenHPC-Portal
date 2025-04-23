@@ -115,17 +115,12 @@ export const StatBar = () => {
         <Row gutter={[16, 16]} style={{ marginBottom: '1em' }}>
             <Col xs={24} sm={24} md={12} lg={6}>
                 <div>
-                    <Title level={5} style={{ marginTop: '0.5em', marginBottom: '0.5em' }}>CPU</Title>
+                    <Title level={5} style={{ marginTop: '0.5em', marginBottom: '0.5em' }}>CPU & Mem</Title>
                     <Progress 
                         percent={Math.round(stat.cpu.avgLoad)} 
                         strokeColor={getStrokeColor(stat.cpu.avgLoad)}
                         format={percent => `${percent}%`}
                     />
-                </div>
-            </Col>
-            <Col xs={24} sm={24} md={12} lg={6}>
-                <div>
-                    <Title level={5} style={{ marginTop: '0.5em', marginBottom: '0.5em' }}>Memory</Title>
                     <Progress 
                         percent={Math.round((stat.mem.used / stat.mem.total) * 100)}
                         strokeColor={getStrokeColor((stat.mem.used / stat.mem.total) * 100)}
