@@ -61,6 +61,9 @@ export const ListPage = () => {
 
     return <CreateVMBar>
         {data?.sort((a, b) => a.provider.localeCompare(b.provider)).map((provider) => {
+            if (!provider.containers || provider.containers.length == 0) {
+                return <></>
+            }
             return listPerProvider(provider.provider, provider)
         })}
     </CreateVMBar>
