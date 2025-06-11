@@ -1,5 +1,5 @@
 import useSWR from "swr"
-import { api, getHTTPEntry, getSSHEntry } from "../shared"
+import { api, getApiKey, getHTTPEntry, getSSHEntry } from "../shared"
 import { VMListProvider, VMListItem } from "../api/models"
 import { Card, Typography, Space, Row, Col, Spin, Alert, Tag, Button, Popconfirm, Popover } from 'antd'
 import { CloseOutlined, ContainerOutlined, PlusOutlined, ReloadOutlined, SettingOutlined, BarChartOutlined } from '@ant-design/icons'
@@ -10,6 +10,7 @@ import { SiJupyter } from 'react-icons/si'
 import { LuKey } from "react-icons/lu"
 import { RiTerminalFill } from "react-icons/ri"
 import { GrUpgrade } from "react-icons/gr"
+import { PiWarningDiamondBold } from "react-icons/pi"
 const { Title } = Typography
 
 interface CreateVMBarProps {
@@ -22,12 +23,13 @@ const CreateVMBar = ({ children } : CreateVMBarProps) => {
     return <div>
         <StatBar />
         <Space>
-            <Button icon={<PlusOutlined />} type="primary" onClick={() => navigate('/create')}></Button>
+            { (getApiKey()) && <Button icon={<PlusOutlined />} type="primary" onClick={() => navigate('/create')}></Button> }
             <Button icon={<ReloadOutlined />} onClick={() => {
                 window.location.reload()
             }}></Button>
             <Button icon={<SettingOutlined />} onClick={() => navigate('/settings')}></Button>
             <Button icon={<BarChartOutlined />} type={showMetrics ? "primary" : "default"} onClick={() => setShowMetrics(!showMetrics)}></Button>
+            { getApiKey() && <Button icon={<PiWarningDiamondBold />} onClick={() => api.infraPxRestartGet() } title="Restart Port Forward Service"></Button> }
         </Space>
         {showMetrics && <PerformanceMetrics />}
         {children}

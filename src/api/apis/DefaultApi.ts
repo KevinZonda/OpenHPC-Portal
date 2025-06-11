@@ -87,6 +87,38 @@ export class DefaultApi extends runtime.BaseAPI {
 
     /**
      * 
+     * 重启端口代理
+     */
+    async infraPxRestartGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // apikey-header-Authorization authentication
+        }
+
+        const response = await this.request({
+            path: `/infra/px/restart`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse<any>(response);
+    }
+
+    /**
+     * 
+     * 重启端口代理
+     */
+    async infraPxRestartGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object> {
+        const response = await this.infraPxRestartGetRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * 
      * 容器统计
      */
     async statContainerGetRaw(requestParameters: StatContainerGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>> {
